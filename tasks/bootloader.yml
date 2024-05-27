@@ -10,6 +10,6 @@
     creates: /boot/grub
 
 - name: generate grub config
-  shell: grub-mkconfig -o /boot/grub/grub.cfg
+  command: grub-mkconfig -o /boot/grub/grub.cfg
   args:
     creates: /boot/grub/grub.cfg

@@ -6,8 +6,8 @@
   register: latest_stage
 
 - set_fact:
-    latest_stage_tarball_url_suffix: "{{ ( latest_stage.content.splitlines() | reject('match', '#') | first ).split(' ')[0] }}"
-    latest_stage_tarball: "{{ ( latest_stage.content.splitlines() | reject('match', '#') | first ).split(' ')[0].split('/')[1] }}"
+    latest_stage_tarball_url_suffix: "{{ ( latest_stage.content.splitlines() | reject('match', '#'))[3].split(' ')[0] }}"
+    latest_stage_tarball: "{{ ( latest_stage.content.splitlines() | reject('match', '#'))[3].split(' ')[0].split('/')[1] }}"
 
 - name: fetch latest stage tarball
   get_url:
@@ -16,8 +16,7 @@
     tmp_dest: /mnt/gentoo
 
 - name: extract stage tarball
-  command: "tar xvjpf {{ latest_stage_tarball }} --xattrs"
+  command: "tar xpvf {{ latest_stage_tarball }} --xattrs"
   args:
-    warn: no
     chdir: /mnt/gentoo
     creates: /mnt/gentoo/var

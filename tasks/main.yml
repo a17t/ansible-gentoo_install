@@ -1,11 +1,11 @@
 ---
-- include: disk.yml
-- include: tarball.yml
-- include: chroot.yml
-- include: portage.yml
-- include: misc.yml
-- include: kernel.yml
-- include: network.yml
-- include: daemons.yml
-- include: bootloader.yml
-- include: finish.yml
+#- include_tasks: disk.yml
+#- include_tasks: tarball.yml
+- include_tasks: chroot.yml
+#- include_tasks: portage.yml
+#- include_tasks: misc.yml
+#- include_tasks: kernel.yml
+- include_tasks: network.yml
+- include_tasks: daemons.yml
+- include_tasks: bootloader.yml
+- include_tasks: finish.yml

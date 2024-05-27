@@ -23,6 +23,17 @@
 - name: install portage tree snapshot
   command: emerge-webrsync
 
+- name: select profile default/linux/amd64/23.0/systemd
+  command: eselect profile set default/linux/amd64/23.0/systemd
+
+- name: Sync repositories and update world
+  community.general.portage:
+    package: '@world'
+    update: true
+    deep: true
+    sync: true
+
+
 #- name: update portage tree
 #  command: emerge --sync
 
@@ -32,3 +43,5 @@
   command: emerge app-portage/gentoolkit
   args:
     creates: /var/db/pkg/app-portage/gentoolkit-*
+
+
