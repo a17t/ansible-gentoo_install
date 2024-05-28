@@ -1,6 +1,6 @@
 ---
 gentoo_install_disk: /dev/sda
-gentoo_install_disklabel: msdos
+gentoo_install_disklabel: gpt
 gentoo_install_baseurl: "http://distfiles.gentoo.org/releases/amd64/autobuilds/"
 gentoo_install_latest_stage_pointer: "latest-stage3-amd64-systemd.txt"
 gentoo_install_portage_makeconf_default:

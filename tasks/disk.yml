@@ -17,16 +17,20 @@
 # We need to leave a small gap at the beginning of the disk, or grub won't be
 # able to install to the MBR
 - name: create boot partition
-  command: parted -s {{ gentoo_install_disk }} mkpart primary ext2 1M 200M
+  command: parted -s {{ gentoo_install_disk }} mkpart primary fat32 1M 200M
+
+- name: mark boot partition as esp
+  command: parted -s {{ gentoo_install_disk }} set 1 esp on
+
 
 - name: mark boot partition as active
   command: parted -s {{ gentoo_install_disk }} set 1 boot on
 
 - name: create root partition
-  command: parted -s {{ gentoo_install_disk }} -- mkpart primary ext4 200M -1s
+  command: parted -s {{ gentoo_install_disk }} -- mkpart primary ext4 200M 100%
 
 - name: format boot partition
-  filesystem: dev={{ gentoo_install_disk }}1 fstype=ext2 force=yes
+  filesystem: dev={{ gentoo_install_disk }}1 fstype=fat32 force=yes
 
 - name: format root partition
   filesystem: dev={{ gentoo_install_disk }}2 fstype=ext4 force=yes
@@ -42,10 +46,15 @@
   file:
     path: /mnt/gentoo/boot
     state: directory
-
+    
+- name: create /boot/efi mountpoint
+  file:
+    path: /mnt/gentoo/boot/efi
+    state: directory
+    
 - name: mount boot partition
   mount:
-    name: /mnt/gentoo/boot
+    name: /mnt/gentoo/boot/efi
     src: "{{ gentoo_install_disk }}1"
-    fstype: ext2
+    fstype: vfat
     state: mounted

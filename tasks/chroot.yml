@@ -13,24 +13,25 @@
     remote_src: yes
 
 - name: mount /proc in chroot
-  mount:
-    name: /mnt/gentoo/proc
-    src: proc
-    fstype: proc
-    state: mounted
-
-- name: bind-mount dirs in chroot
-  mount:
-    name: /mnt/gentoo/{{ item }}
-    src: /{{ item }}
-    fstype: auto
-    opts: bind
-    state: mounted
-  with_items:
-    - sys
-    - dev
-    - dev/pts
-    - dev/shm
+  command: mount --types proc /proc /mnt/gentoo/proc 
+  
+- name: mount /sys in chroot
+  command: mount --rbind /sys /mnt/gentoo/sys 
+  
+- name: make-rslave /proc in chroot
+  command: mount --make-rslave /mnt/gentoo/sys 
+  
+- name: mount /dev in chroot
+  command: mount --rbind /dev /mnt/gentoo/dev 
+  
+- name: make-rslave /dev in chroot
+  command: mount --make-rslave /mnt/gentoo/dev 
+  
+- name: mount /run in chroot
+  command: mount --bind /run /mnt/gentoo/run 
+  
+- name: make-rslave /run in chroot
+  command: mount --make-slave /mnt/gentoo/run 
 
 - name: enable chroot wrapper
   set_fact:
